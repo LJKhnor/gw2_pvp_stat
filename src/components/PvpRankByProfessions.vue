@@ -3,87 +3,124 @@
     <div class="pvp-rank-title">
       By professions
     </div>
-    <div class="chart">
-      <VueApexCharts type="bar" :options="options" :series="series" :legend="legend" :xaxis="xaxis"></VueApexCharts>
+    <div class="chart-professions">
+      <VueApexCharts type="bar" :options="options" :series="series" ></VueApexCharts>
     </div>
   </div>
 </template>
 <script lang="ts">
+
+import { ref } from 'vue';
+import apiClient from '../axios'
 import VueApexCharts from 'vue3-apexcharts'
+import AuthService from '@/services/AuthService.js'
 export default {
 name:'PvpRankByProfessions',
 components: { VueApexCharts },
   setup() {
-    const response = {
-      "elementalist": {
-      "wins": 3,
-      "losses": 7,
-      "desertions": 0,
-      "byes": 0,
-      "forfeits": 0
-    },
-      "guardian": {
-        "wins": 6,
-        "losses": 15,
-        "desertions": 0,
-        "byes": 0,
-        "forfeits": 0
-    }
-    }
-    const series = [{
-      name: 'wins',
-      data: [3,6]
-    },
-    {
-      name: 'losses',
-      data: [7,15]
-    },
-    {
-      name: 'desertions',
-      data: [0,0]
-    },
-    {
-      name: 'byes',
-      data: [0,0]
-    },
-    {
-      name: 'forfeits',
-      data: [0,0]
-    }]
-    const options = {
-      chart: {
-        type: 'bar',
-        stacked: true
-      },
-      xaxis: {
-        type: 'string',
-        categories: getCategories()
-      },
-      legend: {
-        show: true
-      },
-      plotOptions: {
-        bar: {
-          distributed: false
-        }
-  }
-    }
-    function getCategories(){
+    const categoriesRef = ref([] as string[])
+    const seriesRef = ref({})
+    const optionsRef = ref({})
+    const seriesToDisplay = ref({})
 
-      return ['elementalist', 'guardian']
+    getStats()
+
+    async function getStats(){
+
+      const urlPvpStatRankProfessions = '/pvp/stats/professions'
+      const optionsUrl = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + AuthService.getCurrentToken()
+        }
+      }
+      try{
+        const response = await apiClient.get(urlPvpStatRankProfessions, optionsUrl)
+        const data = response.data
+
+        // Transformation des données pour ApexCharts
+        categoriesRef.value = Object.keys(data);
+        console.log('catégories : ', categoriesRef)
+        seriesRef.value = Object.values(data);
+
+        seriesToDisplay.value = getSeries(seriesRef.value)
+
+        optionsRef.value = {
+        chart: {
+          type: 'bar',
+          stacked: true
+        },
+        xaxis: {
+          type: 'string',
+          categories: categoriesRef.value
+        },
+        legend: {
+          show: true
+        },
+        plotOptions: {
+              bar: {
+                distributed: false
+              }
+        }
+      }
+      } catch(error){
+        console.error('Erreur lors de la récupération des statistiques pour les professions :', error)
+      }
     }
-    return { options, series }
+
+    function getSeries(response: object){
+      const wins = [] as number[]
+      const losses = [] as number[]
+      const desertions = [] as number[]
+      const byes = [] as number[]
+      const forfeits = [] as number[]
+
+      for (const key in response){
+        const data = response[key]
+        for(const keyData in data){
+          switch(keyData){
+            case 'wins':
+              wins.push(data[keyData] as number)
+              break
+            case 'losses':
+              losses.push(data[keyData] as number)
+              break
+            case 'desertions':
+              desertions.push(data[keyData] as number)
+              break
+            case 'byes':
+              byes.push(data[keyData] as number)
+              break
+            case 'forfeits':
+            forfeits.push(data[keyData] as number)
+              break
+          }
+        }
+      }
+      return [
+        {name: 'wins',data: wins},
+        {name: 'losses',data: losses},
+        {name: 'desertions',data: desertions},
+        {name: 'byes',data: byes},
+        {name: 'forfeits',data: forfeits}
+      ]
+    }
+    return { options: optionsRef, series: seriesToDisplay }
   },
 }
 </script>
 <style>
 .pvp-rank-professions-container{
-  width: 350px;
+  width: 700px;
   border-radius: 20%;
 }
 .pvp-rank-title{
   position: relative;
   top: 1vh;
   left: 5vw;
+}
+.chart-professions{
+  width: 700px;;
 }
 </style>

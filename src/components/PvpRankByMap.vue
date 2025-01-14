@@ -4,7 +4,7 @@
       By map
     </div>
     <div class="chart">
-      <VueApexCharts type="bar" :options="options" :series="series" :legend="legend" :xaxis="xaxis"></VueApexCharts>
+      <VueApexCharts type="bar" :options="options" :series="series"></VueApexCharts>
     </div>
   </div>
 </template>
@@ -14,6 +14,7 @@ export default {
 name:'PvpRankByMap',
 components: { VueApexCharts },
   setup() {
+    const response = {}
     const series = [{
     name: 'sales',
     data: [30,40,35,50,49,60,70,91,125]
@@ -22,16 +23,20 @@ components: { VueApexCharts },
       chart: {
               height: 350,
               type: 'bar',
-            }
+      },
+      labels: getCategories(),
+      legend: {
+        show: true
+      },
     }
-    const legend= {
-              show: true
-            }
-
-    const xaxis = {
-    categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
-  }
-    return { options, series, xaxis, legend }
+    function getCategories(){
+      const categories = []
+      for(const key in response){
+        categories.push(key)
+      }
+      return categories
+    }
+    return { options, series }
   },
 }
 </script>

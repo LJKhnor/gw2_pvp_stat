@@ -11,35 +11,54 @@
 <script lang="ts">
 import VueApexCharts from 'vue3-apexcharts';
 
+import { ref } from 'vue'
+import apiClient from '../axios'
+import AuthService from '@/services/AuthService.js'
+
 export default {
   name: 'PvpRankByAccountView',
   components: { VueApexCharts },
   setup() {
-    const response = {
-      "aggregate": {
-        "wins": 6,
-        "losses": 14,
-        "desertions": 0,
-        "byes": 0,
-        "forfeits": 0
-    },
-    }
-    const series = [6,14,0,0,0]
-    const options = {
-      chart: {
-        type: 'bar',
-        stacked: true
-      },
-      labels: getCategories(),
-      legend: {
-        show: true
-      },
-    }
-    function getCategories(){
+    const categoriesRef = ref([] as string[])
+    const seriesRef = ref({})
+    const optionsRef = ref({})
 
-      return ['wins', 'losses', 'desertions', 'byes','forfeits']
+    getStats()
+
+
+    async function getStats(){
+      const urlPvpStatRank = '/pvp/stats/account'
+      const optionsUrl = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + AuthService.getCurrentToken()
+        }
+      }
+      try{
+        const response = await apiClient.get(urlPvpStatRank, optionsUrl)
+        const data = response.data
+
+        // Transformation des données pour ApexCharts
+        categoriesRef.value = Object.keys(data);
+        seriesRef.value = Object.values(data);
+
+        optionsRef.value = {
+          chart: {
+            type: 'pie',
+            stacked: true
+          },
+          labels: categoriesRef.value,
+          legend: {
+            show: true
+          },
+        }
+      } catch(error){
+        console.error('Erreur lors de la récupération des statistiques pour le compte :', error)
+      }
     }
-    return { options, series }
+
+    return { options: optionsRef, series: seriesRef }
   },
 }
 </script>

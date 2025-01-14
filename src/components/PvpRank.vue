@@ -6,14 +6,35 @@
 </template>
 
 <script lang="ts">
+
+import { ref } from 'vue';
+import apiClient from '../axios'
+import AuthService from '@/services/AuthService.js'
 export default {
   name: 'PvpRank',
   props: [],
   setup() {
-    const pvpRank = '87'
-    const pvpRankLogo =
-      "https://render.guildwars2.com/file/DECD0D647C9433CC2128BF2F6FE5A5185513EE59/347223.png"
-    const pvpRankPoints = '152645987'
+    const pvpRank = ref(0)
+    const pvpRankLogo = ref('')
+    const pvpRankPoints = ref(0)
+    const urlPvpStatRank = '/pvp/stats/rank'
+      const options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + AuthService.getCurrentToken()
+        }
+      }
+
+    getStats()
+
+
+    async function getStats(){
+      const response = await apiClient.get(urlPvpStatRank, options)
+      pvpRank.value = response.data.rank
+      pvpRankLogo.value = response.data.logo
+      pvpRankPoints.value = response.data.rankPoints
+    }
 
     return { pvpRank, pvpRankLogo, pvpRankPoints }
   },

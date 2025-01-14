@@ -4,7 +4,7 @@
     <PvpRankByAccount/>
     <PvpRankByProfessions/>
     <PvpRankByLadders />
-    <PvpRankByMap/>
+    <!-- <PvpRankByMap/> -->
   </main>
 </template>
 
