@@ -43,6 +43,17 @@
             placeholder="Confirmez votre mot de passe"
           />
         </div>
+        <hr>
+        <div class="form-group">
+          <label for="arenanet-token">Token Arenanet</label>
+          <input
+            class="input-register"
+            type="text"
+            id="arenanet-token"
+            v-model="form.arenanetToken"
+            placeholder="Entrez votre token Arenanet"
+          />
+        </div>
         <button type="submit" class="btn register-btn">S'inscrire</button>
       </form>
       <p class="redirect-login">Déjà inscrit ? <a href="/login">Connectez-vous ici</a>.</p>
@@ -184,5 +195,8 @@ label {
 
 .redirect-login a:hover {
   text-decoration: underline;
+}
+hr{
+  margin: 12%;
 }
 </style>

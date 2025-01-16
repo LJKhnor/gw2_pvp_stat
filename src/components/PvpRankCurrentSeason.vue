@@ -1,11 +1,5 @@
 <template>
   <div class="pvp-info-container pvp-rank-container">
-    <div class="pvp-rank-banner">
-      {{pvpRank}}
-    </div>
-    <div class="pvp-rank-logo">
-      <img :src="pvpRankLogo" alt=""  />
-    </div>
   </div>
 </template>
 
@@ -15,7 +9,7 @@ import { ref } from 'vue';
 import apiClient from '../axios'
 import AuthService from '@/services/AuthService.js'
 export default {
-  name: 'PvpRank',
+  name: 'PvpRankCurrentSeason',
   props: [],
   setup() {
     const pvpRank = ref(0)
@@ -48,12 +42,5 @@ export default {
 <style>
 .pvp-rank-container{
   width: 20%;
-}
-.pvp-rank-banner{
-  position: relative;
-  font-size: 5vh;
-}
-.pvp-rank-logo{
-  width: 100%;
 }
 </style>

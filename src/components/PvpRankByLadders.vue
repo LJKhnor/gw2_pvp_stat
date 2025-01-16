@@ -3,7 +3,7 @@
     <div class="pvp-rank-title">
       By Ladders
     </div>
-    <div class="chart">
+    <div class="chart-ladders">
       <VueApexCharts type="bar" :options="options" :series="series"></VueApexCharts>
     </div>
   </div>
@@ -14,79 +14,89 @@ import apiClient from '../axios'
 import VueApexCharts from 'vue3-apexcharts'
 import AuthService from '@/services/AuthService.js'
 export default {
-name:'PvpRankByProfessions',
+name:'PvpRankByLadders',
 components: { VueApexCharts },
   setup() {
-    const response = {
-        "ranked": {
-        "wins": 4,
-        "losses": 10,
-        "desertions": 0,
-        "byes": 0,
-        "forfeits": 0
-      },
-      "unranked": {
-        "wins": 2,
-        "losses": 4,
-        "desertions": 0,
-        "byes": 0,
-        "forfeits": 0
+    const categoriesRef = ref([] as string[])
+    const seriesRef = ref({})
+    const optionsRef = ref({})
+    const seriesToDisplay = ref({})
+
+    getStats()
+
+    async function getStats(){
+
+      const urlPvpStatRankLadders = '/pvp/stats/ladders'
+      const optionsUrl = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + AuthService.getCurrentToken()
+        }
       }
-    }
-    const professionsCategories = getCategories()
-    const series = getSeries()
-    const options = {
-      chart: {
-        type: 'bar',
-        stacked: true
-      },
-      xaxis: {
-        type: 'string',
-        categories: getCategories()
-      },
-      legend: {
-        show: true
-      },
-      plotOptions: {
-            bar: {
-              distributed: false
-            }
+      try{
+        const response = await apiClient.get(urlPvpStatRankLadders, optionsUrl)
+        const data = response.data
+
+        // Transformation des données pour ApexCharts
+        categoriesRef.value = Object.keys(data);
+        console.log('catégories : ', categoriesRef)
+        seriesRef.value = Object.values(data);
+
+        seriesToDisplay.value = getSeries(seriesRef.value)
+
+        optionsRef.value = {
+        chart: {
+          type: 'bar',
+          stacked: true,
+          toolbar:{
+            show: false
+          }
+        },
+        xaxis: {
+          type: 'string',
+          categories: categoriesRef.value
+        },
+        legend: {
+          show: true
+        },
+        plotOptions: {
+              bar: {
+                distributed: false
+              }
+        }
       }
-    }
-    function getCategories(){
-      const categories = []
-      for(const key in response){
-        categories.push(key)
+      } catch(error){
+        console.error('Erreur lors de la récupération des statistiques pour les professions :', error)
       }
-      return categories
     }
 
-    function getSeries(){
-      const wins = []
-      const losses = []
-      const desertions = []
-      const byes = []
-      const forfeits = []
-      for (const key in professionsCategories){
-        const pc = professionsCategories[key as keyof typeof professionsCategories]
-        const panel = response[pc as keyof typeof response]
-        for (const keyPanel in panel){
-          const value = panel[keyPanel as keyof typeof panel]
-          switch (keyPanel){
+    function getSeries(response: object){
+      const wins = [] as number[]
+      const losses = [] as number[]
+      const desertions = [] as number[]
+      const byes = [] as number[]
+      const forfeits = [] as number[]
+
+      for (const key in response){
+        const data = response[key]
+        for(const keyData in data){
+          switch(keyData){
             case 'wins':
-              wins.push(value)
+              wins.push(data[keyData] as number)
               break
             case 'losses':
-              losses.push(value)
+              losses.push(data[keyData] as number)
               break
             case 'desertions':
-              desertions.push(value)
+              desertions.push(data[keyData] as number)
               break
             case 'byes':
-              byes.push(value)
+              byes.push(data[keyData] as number)
               break
             case 'forfeits':
-              forfeits.push(value)
+            forfeits.push(data[keyData] as number)
+              break
           }
         }
       }
@@ -98,19 +108,15 @@ components: { VueApexCharts },
         {name: 'forfeits',data: forfeits}
       ]
     }
-
-    return { options, series }
+    return { options: optionsRef, series: seriesToDisplay }
   },
 }
 </script>
 <style>
 .pvp-rank-ladders-container{
-  width: 350px;
-  border-radius: 20%;
+  width: 700px;
 }
-.pvp-rank-title{
-  position: relative;
-  top: 1vh;
-  left: 5vw;
+.chart-ladders{
+  width: 700px;;
 }
 </style>

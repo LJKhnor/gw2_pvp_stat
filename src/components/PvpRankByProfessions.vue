@@ -49,7 +49,10 @@ components: { VueApexCharts },
         optionsRef.value = {
         chart: {
           type: 'bar',
-          stacked: true
+          stacked: true,
+          toolbar:{
+            show: false
+          }
         },
         xaxis: {
           type: 'string',
@@ -113,14 +116,8 @@ components: { VueApexCharts },
 <style>
 .pvp-rank-professions-container{
   width: 700px;
-  border-radius: 20%;
-}
-.pvp-rank-title{
-  position: relative;
-  top: 1vh;
-  left: 5vw;
 }
 .chart-professions{
-  width: 700px;;
+  width: 700px;
 }
 </style>

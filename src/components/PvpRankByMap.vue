@@ -45,9 +45,4 @@ components: { VueApexCharts },
   width: 350px;
   border-radius: 20%;
 }
-.pvp-rank-title{
-  position: relative;
-  top: 1vh;
-  left: 5vw;
-}
 </style>

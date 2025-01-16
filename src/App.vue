@@ -3,9 +3,10 @@
     <div class="wrapper">
       <NavBar msg="GW2 PvP Stats" />
       <nav>
-        <RouterLink to="/">Home</RouterLink>
+        <!-- <RouterLink to="/">Home</RouterLink> -->
         <RouterLink to="/pvpstats">Pvp Stats</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/history">Pvp Historique</RouterLink>
+        <RouterLink to="/about">A propos</RouterLink>
       </nav>
     </div>
   </header>

@@ -52,6 +52,10 @@ export default {
           legend: {
             show: true
           },
+
+          // fill: {
+          //   colors: ['#F44336', '#E91E63', '#9C27B0']
+          // }
         }
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour le compte :', error)
@@ -65,11 +69,5 @@ export default {
 <style>
 .pvp-rank-account-container{
   width: 350px;
-  border-radius: 20%;
-}
-.pvp-rank-title{
-  position: relative;
-  top: 1vh;
-  left: 5vw;
 }
 </style>

@@ -16,6 +16,12 @@ const router = createRouter({
       name: 'pvpstats',
       component: () => import('../views/PvpRankView.vue'),
     },
+    ,
+    {
+      path: '/history',
+      name: 'historique',
+      component: () => import('../views/PvpHistoryView.vue'),
+    },
     {
       path: '/login',
       name: 'login',
