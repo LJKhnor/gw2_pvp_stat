@@ -26,7 +26,6 @@ export default {
 
     getStats()
 
-
     async function getStats(){
       const response = await apiClient.get(urlPvpStatRank, options)
       pvpRank.value = response.data.rank

@@ -14,10 +14,10 @@ export default{
 </script>
 <style>
 .pvp-history-container{
-background-color: darkgreen;
-margin: 2%;
-padding: 2%;
-border: 2px solid;
+  background-color: darkgreen;
+  margin: 2%;
+  padding: 2%;
+  border: 2px solid;
 }
 .pvp-info-container{
   background-color: green;
