@@ -11,7 +11,7 @@
         <div class="winrate">Taux de victoire : {{ winrate }} %</div>
         <div class="most-played-map">Carte la plus jouée : {{ mostPlayedMap }}</div>
         <div class="most-played-class">Classe la plus jouée : <strong :style="getClassColor(mostPlayedClass)">{{ mostPlayedClass }}</strong> </div>
-        <div class="most-played-class-winning">Classe avec le meilleur winrate : <strong :style="getClassColor(bestWinrateClass)">{{ bestWinrateClass }}</strong> </div>
+        <div class="most-played-class-winning">Classe avec le meilleur taux de victoire : <strong :style="getClassColor(bestWinrateClass)">{{ bestWinrateClass }}</strong> </div>
       </div>
     </div>
   </div>
@@ -133,8 +133,15 @@ export default {
 }
 .content{
   display: flex;
+  width: auto;
+  margin: 2px;
+}
+.chart{
+  width: 25%;
+  margin: 2px;
 }
 .additional-data{
-  width: 75%;
+  width: 100%;
+  margin: 2px;
 }
 </style>

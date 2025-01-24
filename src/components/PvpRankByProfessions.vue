@@ -18,7 +18,6 @@ import apiClient from '../axios'
 import VueApexCharts from 'vue3-apexcharts'
 import AuthService from '@/services/AuthService.js'
 import Loader from '@/components/Loader.vue'
-import { shouldHydrate } from 'pinia';
 export default {
 name:'PvpRankByProfessions',
 components: { VueApexCharts, Loader },
@@ -97,7 +96,9 @@ components: { VueApexCharts, Loader },
       return categoriesRef.value[winrates.indexOf(maxWinrate)]
     }
     function getWinrate(value){
-      return (value.wins / (value.wins + value.losses) * 100)
+      let wins = value.wins + value.byes
+      let losses = value.losses + value.forfeits
+      return (wins / (wins + losses) * 100)
     }
 
     function getSeries(response: object){
