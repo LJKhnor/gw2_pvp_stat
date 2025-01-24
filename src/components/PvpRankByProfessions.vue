@@ -18,6 +18,7 @@ import apiClient from '../axios'
 import VueApexCharts from 'vue3-apexcharts'
 import AuthService from '@/services/AuthService.js'
 import Loader from '@/components/Loader.vue'
+import { shouldHydrate } from 'pinia';
 export default {
 name:'PvpRankByProfessions',
 components: { VueApexCharts, Loader },
@@ -28,6 +29,7 @@ components: { VueApexCharts, Loader },
     const seriesToDisplay = ref({})
     const isDataRetrieve = ref(false)
     const mostPlayedClass = ref('')
+    const bestWinrateClass = ref('')
 
     getStats()
 
@@ -47,7 +49,6 @@ components: { VueApexCharts, Loader },
 
         // Transformation des données pour ApexCharts
         categoriesRef.value = Object.keys(data);
-        console.log('catégories : ', categoriesRef)
         seriesRef.value = Object.values(data);
 
         seriesToDisplay.value = getSeries(seriesRef.value)
@@ -71,15 +72,32 @@ components: { VueApexCharts, Loader },
               bar: {
                 distributed: false
               }
-        }
+        },
+        grid: {
+          // borderColor: '#111',
+          strokeDashArray: 7,
+        },
       }
       isDataRetrieve.value = true
       mostPlayedClass.value = categoriesRef.value[0]
+      bestWinrateClass.value = getBestWinrateClass(seriesRef.value)
       ctx.emit('mostPlayedClass', mostPlayedClass.value)
+      ctx.emit('bestWinrateClass', bestWinrateClass.value)
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour les professions :', error)
       }
+    }
 
+    function getBestWinrateClass(value){
+      const winrates = []
+      for(const k in value){
+        winrates.push(getWinrate(value[k]))
+      }
+      const maxWinrate = Math.max(...winrates)
+      return categoriesRef.value[winrates.indexOf(maxWinrate)]
+    }
+    function getWinrate(value){
+      return (value.wins / (value.wins + value.losses) * 100)
     }
 
     function getSeries(response: object){

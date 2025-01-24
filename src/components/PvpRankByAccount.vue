@@ -10,7 +10,8 @@
       <div class="additional-data">
         <div class="winrate">Taux de victoire : {{ winrate }} %</div>
         <div class="most-played-map">Carte la plus jouée : {{ mostPlayedMap }}</div>
-        <div class="most-played-class">Classe la plus jouée : <strong :style="getClassColor()">{{ mostPlayedClass }}</strong> </div>
+        <div class="most-played-class">Classe la plus jouée : <strong :style="getClassColor(mostPlayedClass)">{{ mostPlayedClass }}</strong> </div>
+        <div class="most-played-class-winning">Classe avec le meilleur winrate : <strong :style="getClassColor(bestWinrateClass)">{{ bestWinrateClass }}</strong> </div>
       </div>
     </div>
   </div>
@@ -29,8 +30,8 @@ import Loader from '@/components/Loader.vue'
 export default {
   name: 'PvpRankByAccountView',
   components: { VueApexCharts, Loader },
-  props: ['mostPlayedClass'],
-  setup(props) {
+  props: ['mostPlayedClass', 'bestWinrateClass'],
+  setup() {
     const isDataRetrieve = ref(false)
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
@@ -88,8 +89,8 @@ export default {
     function getMostPlayedMap(){
       return 'aucune donnée'
     }
-    function getClassColor(){
-      switch(props.mostPlayedClass as string){
+    function getClassColor(value: string){
+      switch(value){
         case 'elementalist':
           return 'color: red'
           break

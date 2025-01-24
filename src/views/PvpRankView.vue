@@ -1,9 +1,9 @@
 <template>
   <main class="pvp-rank-view-container">
     <PvpRank />
-    <PvpRankByAccount :most-played-class="mostPlayedClass"/>
+    <PvpRankByAccount :most-played-class="mostPlayedClass" :best-winrate-class="bestWinrateClass"/>
     <!-- <PvpRankCurrentSeason/> -->
-    <PvpRankByProfessions @most-played-class="getMostPlayedClass"/>
+    <PvpRankByProfessions @most-played-class="getMostPlayedClass" @best-winrate-class="getBestWinrateClass"/>
     <PvpRankByLadders />
     <!-- <PvpRankByMap/> -->
   </main>
@@ -25,11 +25,15 @@ export default {
   setup() {
     const test = 2
     const mostPlayedClass = ref('')
+    const bestWinrateClass = ref('')
     function getMostPlayedClass(value: string){
-      console.log('tu es dans le composant parent avec ', value)
       mostPlayedClass.value = value
     }
-    return { test, mostPlayedClass, getMostPlayedClass }
+    function getBestWinrateClass(value: string){
+      console.dir(value)
+      bestWinrateClass.value = value
+    }
+    return { test, mostPlayedClass,bestWinrateClass, getMostPlayedClass, getBestWinrateClass }
   },
 }
 </script>

@@ -44,9 +44,8 @@ components: { VueApexCharts, Loader },
         const data = response.data
 
         // Transformation des données pour ApexCharts
-        categoriesRef.value = Object.keys(data);
-        console.log('catégories : ', categoriesRef)
-        seriesRef.value = Object.values(data);
+        categoriesRef.value = Object.keys(data)
+        seriesRef.value = Object.values(data)
 
         seriesToDisplay.value = getSeries(seriesRef.value)
 
@@ -69,7 +68,11 @@ components: { VueApexCharts, Loader },
               bar: {
                 distributed: false
               }
-        }
+        },
+        grid: {
+          // borderColor: '#111',
+          strokeDashArray: 7,
+        },
       }
       isDataRetrieve.value = true
       } catch(error){
