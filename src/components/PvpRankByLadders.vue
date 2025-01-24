@@ -123,9 +123,9 @@ components: { VueApexCharts, Loader },
 </script>
 <style>
 .pvp-rank-ladders-container{
-  width: 700px;
+  width: 48%;
 }
 .chart-ladders{
-  width: 700px;;
+  width: 100%;
 }
 </style>

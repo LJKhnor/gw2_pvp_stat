@@ -41,8 +41,7 @@ export default {
 <style>
 .pvp-rank-view-container{
   background-color: darkgreen;
-  margin: 2%;
-  padding: 2%;
+  margin-top: 2px;
   display: flex;
   flex-wrap: wrap;
   border: 2px solid;

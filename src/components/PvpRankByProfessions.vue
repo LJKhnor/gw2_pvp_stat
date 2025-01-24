@@ -144,9 +144,9 @@ components: { VueApexCharts, Loader },
 </script>
 <style>
 .pvp-rank-professions-container{
-  width: 700px;
+  width: 48%;
 }
 .chart-professions{
-  width: 700px;
+  width: 100%;
 }
 </style>

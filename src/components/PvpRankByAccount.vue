@@ -133,7 +133,7 @@ export default {
 }
 .content{
   display: flex;
-  width: auto;
+  width: 100%;
   margin: 2px;
 }
 .chart{
