@@ -1,11 +1,14 @@
 <template>
-  <div class="pvp-info-container pvp-rank-account-container">
+  <div v-if="isDataRetrieve" class="pvp-info-container pvp-rank-account-container">
     <div class="pvp-rank-title">
       By Account
     </div>
     <div class="chart">
       <VueApexCharts type="pie" :options="options" :series="series"></VueApexCharts>
     </div>
+  </div>
+  <div v-else class="pvp-info-container pvp-rank-account-container">
+    <Loader/>
   </div>
 </template>
 <script lang="ts">
@@ -14,11 +17,13 @@ import VueApexCharts from 'vue3-apexcharts';
 import { ref } from 'vue'
 import apiClient from '../axios'
 import AuthService from '@/services/AuthService.js'
+import Loader from '@/components/Loader.vue'
 
 export default {
   name: 'PvpRankByAccountView',
-  components: { VueApexCharts },
+  components: { VueApexCharts, Loader },
   setup() {
+    const isDataRetrieve = ref(false)
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
     const optionsRef = ref({})
@@ -57,12 +62,13 @@ export default {
           //   colors: ['#F44336', '#E91E63', '#9C27B0']
           // }
         }
+        isDataRetrieve.value = true
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour le compte :', error)
       }
     }
 
-    return { options: optionsRef, series: seriesRef }
+    return { options: optionsRef, series: seriesRef, isDataRetrieve }
   },
 }
 </script>

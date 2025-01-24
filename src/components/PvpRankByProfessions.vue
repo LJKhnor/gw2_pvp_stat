@@ -1,11 +1,14 @@
 <template>
-  <div class="pvp-info-container pvp-rank-professions-container">
+  <div v-if="isDataRetrieve" class="pvp-info-container pvp-rank-professions-container">
     <div class="pvp-rank-title">
       By professions
     </div>
     <div class="chart-professions">
       <VueApexCharts type="bar" :options="options" :series="series" ></VueApexCharts>
     </div>
+  </div>
+  <div v-else class="pvp-info-container pvp-rank-professions-container">
+    <Loader/>
   </div>
 </template>
 <script lang="ts">
@@ -14,14 +17,16 @@ import { ref } from 'vue';
 import apiClient from '../axios'
 import VueApexCharts from 'vue3-apexcharts'
 import AuthService from '@/services/AuthService.js'
+import Loader from '@/components/Loader.vue'
 export default {
 name:'PvpRankByProfessions',
-components: { VueApexCharts },
+components: { VueApexCharts, Loader },
   setup() {
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
     const optionsRef = ref({})
     const seriesToDisplay = ref({})
+    const isDataRetrieve = ref(false)
 
     getStats()
 
@@ -67,9 +72,11 @@ components: { VueApexCharts },
               }
         }
       }
+      isDataRetrieve.value = true
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour les professions :', error)
       }
+
     }
 
     function getSeries(response: object){
@@ -109,7 +116,7 @@ components: { VueApexCharts },
         {name: 'forfeits',data: forfeits}
       ]
     }
-    return { options: optionsRef, series: seriesToDisplay }
+    return { options: optionsRef, series: seriesToDisplay, isDataRetrieve }
   },
 }
 </script>
