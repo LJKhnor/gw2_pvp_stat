@@ -10,6 +10,7 @@
       <div class="additional-data">
         <div class="winrate">Taux de victoire : {{ winrate }} %</div>
         <div class="most-played-map">Carte la plus jouée : {{ mostPlayedMap }}</div>
+        <div class="most-played-class">Classe la plus jouée : <strong :style="getClassColor()">{{ mostPlayedClass }}</strong> </div>
       </div>
     </div>
   </div>
@@ -28,7 +29,8 @@ import Loader from '@/components/Loader.vue'
 export default {
   name: 'PvpRankByAccountView',
   components: { VueApexCharts, Loader },
-  setup() {
+  props: ['mostPlayedClass'],
+  setup(props) {
     const isDataRetrieve = ref(false)
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
@@ -86,7 +88,41 @@ export default {
     function getMostPlayedMap(){
       return 'aucune donnée'
     }
-    return { options: optionsRef, series: seriesRef, isDataRetrieve, winrate, mostPlayedMap }
+    function getClassColor(){
+      switch(props.mostPlayedClass as string){
+        case 'elementalist':
+          return 'color: red'
+          break
+        case 'engineer':
+          return 'color: orange'
+          break
+        case 'guardian':
+          return 'color: lightblue'
+          break
+        case 'mesmer':
+          return 'color: rose'
+          break
+        case 'necromancer':
+          return 'color: green'
+          break
+        case 'ranger':
+          return 'color: yellow'
+          break
+        case 'revenant':
+          return 'color: grey'
+          break
+        case 'thief':
+          return 'color: brown'
+          break
+        case 'warrior':
+          return 'color: lightorange'
+          break
+        default:
+          return 'color: var(--color-theme)'
+          break
+      }
+    }
+    return { options: optionsRef, series: seriesRef, isDataRetrieve, winrate, mostPlayedMap, getClassColor }
   },
 }
 </script>

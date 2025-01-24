@@ -21,12 +21,13 @@ import Loader from '@/components/Loader.vue'
 export default {
 name:'PvpRankByProfessions',
 components: { VueApexCharts, Loader },
-  setup() {
+  setup(props, ctx) {
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
     const optionsRef = ref({})
     const seriesToDisplay = ref({})
     const isDataRetrieve = ref(false)
+    const mostPlayedClass = ref('')
 
     getStats()
 
@@ -61,7 +62,7 @@ components: { VueApexCharts, Loader },
         },
         xaxis: {
           type: 'string',
-          categories: categoriesRef.value
+          categories: categoriesRef.value,
         },
         legend: {
           show: true
@@ -73,6 +74,8 @@ components: { VueApexCharts, Loader },
         }
       }
       isDataRetrieve.value = true
+      mostPlayedClass.value = categoriesRef.value[0]
+      ctx.emit('mostPlayedClass', mostPlayedClass.value)
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour les professions :', error)
       }

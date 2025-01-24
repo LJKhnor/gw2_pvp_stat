@@ -1,15 +1,17 @@
 <template>
   <main class="pvp-rank-view-container">
     <PvpRank />
-    <PvpRankByAccount/>
+    <PvpRankByAccount :most-played-class="mostPlayedClass"/>
     <!-- <PvpRankCurrentSeason/> -->
-    <PvpRankByProfessions/>
+    <PvpRankByProfessions @most-played-class="getMostPlayedClass"/>
     <PvpRankByLadders />
     <!-- <PvpRankByMap/> -->
   </main>
 </template>
 
 <script lang="ts">
+
+import { ref } from 'vue';
 import PvpRank from '@/components/PvpRank.vue'
 import PvpRankByProfessions from '@/components/PvpRankByProfessions.vue'
 import PvpRankByAccount from '@/components/PvpRankByAccount.vue'
@@ -22,7 +24,12 @@ export default {
   components: { PvpRank, PvpRankByAccount,PvpRankCurrentSeason, PvpRankByMap ,PvpRankByProfessions, PvpRankByLadders },
   setup() {
     const test = 2
-    return { test }
+    const mostPlayedClass = ref('')
+    function getMostPlayedClass(value: string){
+      console.log('tu es dans le composant parent avec ', value)
+      mostPlayedClass.value = value
+    }
+    return { test, mostPlayedClass, getMostPlayedClass }
   },
 }
 </script>
