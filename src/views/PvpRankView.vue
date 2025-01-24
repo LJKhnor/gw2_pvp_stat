@@ -45,6 +45,7 @@ export default {
   position: relative;
   text-align: center;
   margin: 4%;
+  border: 2px solid;
 }
 img{
   width: 100%;

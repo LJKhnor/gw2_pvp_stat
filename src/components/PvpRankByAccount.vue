@@ -3,8 +3,14 @@
     <div class="pvp-rank-title">
       By Account
     </div>
-    <div class="chart">
-      <VueApexCharts type="pie" :options="options" :series="series"></VueApexCharts>
+    <div class="content">
+      <div class="chart">
+        <VueApexCharts type="pie" :options="options" :series="series"></VueApexCharts>
+      </div>
+      <div class="additional-data">
+        <div class="winrate">Taux de victoire : {{ winrate }} %</div>
+        <div class="most-played-map">Carte la plus jouée : {{ mostPlayedMap }}</div>
+      </div>
     </div>
   </div>
   <div v-else class="pvp-info-container pvp-rank-account-container">
@@ -27,6 +33,8 @@ export default {
     const categoriesRef = ref([] as string[])
     const seriesRef = ref({})
     const optionsRef = ref({})
+    const winrate = ref(0)
+    const mostPlayedMap = ref('')
 
     getStats()
 
@@ -62,18 +70,34 @@ export default {
           //   colors: ['#F44336', '#E91E63', '#9C27B0']
           // }
         }
+        winrate.value = getWinrate(data)
+        mostPlayedMap.value = getMostPlayedMap()
         isDataRetrieve.value = true
       } catch(error){
         console.error('Erreur lors de la récupération des statistiques pour le compte :', error)
       }
     }
 
-    return { options: optionsRef, series: seriesRef, isDataRetrieve }
+    function getWinrate(data: object){
+      let wins = data.wins + data.byes
+      let losses = data.losses + data.forfeits
+      return (wins / (wins + losses) * 100).toFixed(2)
+    }
+    function getMostPlayedMap(){
+      return 'aucune donnée'
+    }
+    return { options: optionsRef, series: seriesRef, isDataRetrieve, winrate, mostPlayedMap }
   },
 }
 </script>
 <style>
 .pvp-rank-account-container{
-  width: 350px;
+  width: auto;
+}
+.content{
+  display: flex;
+}
+.additional-data{
+  width: 75%;
 }
 </style>
