@@ -40,7 +40,6 @@ export default {
 
 <style>
 .pvp-rank-container{
-  width: 20%;
   border-radius: 20%;
 }
 </style>

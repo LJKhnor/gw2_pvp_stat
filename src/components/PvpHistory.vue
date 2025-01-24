@@ -65,9 +65,6 @@ export default {
 }
 </script>
 <style>
-.pvp-rank-container{
-  width: 20%;
-}
 .pvp-info-container {
   padding: 20px;
   font-family: Arial, sans-serif;

@@ -40,7 +40,4 @@ export default {
 </script>
 
 <style>
-.pvp-rank-container{
-  width: 20%;
-}
 </style>

@@ -21,7 +21,6 @@ export default{
 }
 .pvp-info-container{
   background-color: green;
-  margin: 2%;
   border: 2px solid;
 }
 .pvp-history-title{
