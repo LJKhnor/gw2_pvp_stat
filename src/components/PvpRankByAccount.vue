@@ -23,6 +23,7 @@
 import VueApexCharts from 'vue3-apexcharts';
 
 import { ref } from 'vue'
+import { getClassColor } from '@/composables/utils';
 import apiClient from '../axios'
 import AuthService from '@/services/AuthService.js'
 import Loader from '@/components/Loader.vue'
@@ -89,40 +90,7 @@ export default {
     function getMostPlayedMap(){
       return 'aucune donnée'
     }
-    function getClassColor(value: string){
-      switch(value){
-        case 'elementalist':
-          return 'color: red'
-          break
-        case 'engineer':
-          return 'color: orange'
-          break
-        case 'guardian':
-          return 'color: lightblue'
-          break
-        case 'mesmer':
-          return 'color: rose'
-          break
-        case 'necromancer':
-          return 'color: green'
-          break
-        case 'ranger':
-          return 'color: yellow'
-          break
-        case 'revenant':
-          return 'color: grey'
-          break
-        case 'thief':
-          return 'color: brown'
-          break
-        case 'warrior':
-          return 'color: lightorange'
-          break
-        default:
-          return 'color: var(--color-theme)'
-          break
-      }
-    }
+
     return { options: optionsRef, series: seriesRef, isDataRetrieve, winrate, mostPlayedMap, getClassColor }
   },
 }
