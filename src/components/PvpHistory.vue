@@ -8,17 +8,19 @@
           <th>Résultat</th>
           <th>Type</th>
           <th>Saison</th>
+          <th>Classe</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(game, index) in values" :key="index">
           <td>{{ game.started }}</td>
           <td>{{ game.map_id }}</td>
-          <td :class="{ victory: game.result === 'Victory', defeat: game.result === 'Defeat' }">
+          <td :class="{ victory: game.result === 'VICTORY', defeat: game.result === 'DEFEAT' }">
             {{ game.result }}
           </td>
           <td>{{ game.rating_type }}</td>
           <td>{{ game.season }}</td>
+          <td :style="getClassColor((game.profession))">{{ game.profession }}</td>
         </tr>
       </tbody>
     </table>
@@ -59,8 +61,43 @@ export default {
       }
       isDataRetrieve.value = true
     }
+    function getClassColor(value: string){
+      console.log(value.toLowerCase())
+      switch(value.toLowerCase()){
+        case 'elementalist':
+          return 'color: red'
+          break
+        case 'engineer':
+          return 'color: orange'
+          break
+        case 'guardian':
+          return 'color: lightblue'
+          break
+        case 'mesmer':
+          return 'color: rose'
+          break
+        case 'necromancer':
+          return 'color: green'
+          break
+        case 'ranger':
+          return 'color: yellow'
+          break
+        case 'revenant':
+          return 'color: grey'
+          break
+        case 'thief':
+          return 'color: brown'
+          break
+        case 'warrior':
+          return 'color: lightorange'
+          break
+        default:
+          return 'color: var(--color-theme)'
+          break
+      }
+    }
 
-    return { values, isDataRetrieve }
+    return { values, isDataRetrieve, getClassColor }
   }
 }
 </script>
