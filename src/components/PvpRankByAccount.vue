@@ -8,6 +8,7 @@
         <VueApexCharts type="pie" :options="options" :series="series"></VueApexCharts>
       </div>
       <div class="additional-data">
+        <div class="winrate">Nombre de partie : aucune donnée</div>
         <div class="winrate">Taux de victoire : {{ winrate }} %</div>
         <div class="most-played-map">Carte la plus jouée : {{ mostPlayedMap }}</div>
         <div class="most-played-class">Classe la plus jouée : <strong :style="getClassColor(mostPlayedClass)">{{ mostPlayedClass }}</strong> </div>
